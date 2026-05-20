@@ -2,13 +2,15 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleSignOut = () => {
-    localStorage.removeItem("xr_admin");
+    localStorage.removeItem("xr_user");
     router.push("/login");
   };
 
@@ -118,9 +120,7 @@ export default function AdminSidebar() {
                 background: active ? "rgba(232,76,30,0.15)" : "none",
                 borderLeft: active ? "3px solid #E84C1E" : "3px solid transparent",
                 transition: "all 0.2s",
-              }}
-              className="sidebar-link"
-              >
+              }} className="sidebar-link">
                 <span style={{ color: active ? "#E84C1E" : "currentColor" }}>
                   {link.icon}
                 </span>
@@ -163,6 +163,111 @@ export default function AdminSidebar() {
         </div>
       </aside>
 
+      {/* Mobile Top Bar */}
+      <div style={{
+        display: "none", position: "fixed",
+        top: 0, left: 0, right: 0, zIndex: 1000,
+        background: "#111",
+        padding: "0 1.25rem", height: "60px",
+        alignItems: "center", justifyContent: "space-between",
+        borderBottom: "1px solid rgba(255,255,255,0.07)",
+      }} className="admin-mobile-bar">
+
+        {/* Logo */}
+        <Link href="/admin" style={{ textDecoration: "none" }}>
+          <div style={{
+            fontFamily: "var(--font-barlow), sans-serif",
+            fontWeight: 900, fontSize: "1rem",
+            color: "#fff", textTransform: "uppercase",
+          }}>
+            XPRESS<span style={{ color: "#E84C1E" }}>REACH</span>
+          </div>
+        </Link>
+
+        {/* Hamburger */}
+        <button onClick={() => setMobileOpen(!mobileOpen)} style={{
+          background: "none", border: "none",
+          cursor: "pointer", padding: "6px",
+          display: "flex", flexDirection: "column",
+          gap: "5px",
+        }}>
+          <div style={{
+            width: "22px", height: "2px", background: "#fff",
+            transition: "all 0.3s",
+            transform: mobileOpen ? "rotate(45deg) translate(5px, 5px)" : "none",
+          }} />
+          <div style={{
+            width: "22px", height: "2px", background: "#fff",
+            opacity: mobileOpen ? 0 : 1, transition: "opacity 0.2s",
+          }} />
+          <div style={{
+            width: "22px", height: "2px", background: "#fff",
+            transition: "all 0.3s",
+            transform: mobileOpen ? "rotate(-45deg) translate(5px, -5px)" : "none",
+          }} />
+        </button>
+      </div>
+
+      {/* Mobile Dropdown Menu */}
+      {mobileOpen && (
+        <div style={{
+          display: "none", position: "fixed",
+          top: "60px", left: 0, right: 0, zIndex: 999,
+          background: "#111",
+          borderBottom: "1px solid rgba(255,255,255,0.07)",
+          padding: "0.75rem 0",
+        }} className="admin-mobile-menu">
+          {links.map((link) => {
+            const active = pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                style={{
+                  display: "flex", alignItems: "center", gap: "12px",
+                  padding: "0.9rem 1.5rem",
+                  fontFamily: "var(--font-barlow), sans-serif",
+                  fontWeight: 700, fontSize: "0.9rem",
+                  color: active ? "#fff" : "#777",
+                  textDecoration: "none",
+                  background: active ? "rgba(232,76,30,0.15)" : "none",
+                  borderLeft: active ? "3px solid #E84C1E" : "3px solid transparent",
+                }}
+              >
+                <span style={{ color: active ? "#E84C1E" : "currentColor" }}>
+                  {link.icon}
+                </span>
+                {link.label}
+              </Link>
+            );
+          })}
+
+          <div style={{
+            padding: "1rem 1.5rem",
+            borderTop: "1px solid rgba(255,255,255,0.07)",
+            marginTop: "0.5rem",
+            display: "flex", gap: "1rem",
+          }}>
+            <Link href="/" style={{
+              fontFamily: "var(--font-barlow), sans-serif",
+              fontWeight: 600, fontSize: "0.82rem",
+              color: "#777", textDecoration: "none",
+            }}>
+              View Site
+            </Link>
+            <button onClick={handleSignOut} style={{
+              fontFamily: "var(--font-barlow), sans-serif",
+              fontWeight: 600, fontSize: "0.82rem",
+              color: "#E84C1E", background: "none",
+              border: "none", cursor: "pointer", padding: 0,
+            }}>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      )}
+
       <style>{`
         .sidebar-link:hover {
           color: #fff !important;
@@ -170,6 +275,8 @@ export default function AdminSidebar() {
         }
         @media (max-width: 768px) {
           .admin-sidebar { display: none !important; }
+          .admin-mobile-bar { display: flex !important; }
+          .admin-mobile-menu { display: block !important; }
         }
       `}</style>
     </>

@@ -341,12 +341,18 @@ export default function AdminTrackingPage() {
         </div>
       </main>
 
-      <style>{`
-        @media (max-width: 640px) {
-          .track-search { flex-direction: column !important; }
-          .ship-details { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
+     <style>{`
+  @media (max-width: 768px) {
+    main { padding-top: 60px; }
+  }
+  @media (max-width: 1100px) {
+    .admin-stats { grid-template-columns: repeat(3, 1fr) !important; }
+    .admin-tables { grid-template-columns: 1fr !important; }
+  }
+  @media (max-width: 640px) {
+    .admin-stats { grid-template-columns: repeat(2, 1fr) !important; }
+  }
+`}</style>
     </div>
   );
 }

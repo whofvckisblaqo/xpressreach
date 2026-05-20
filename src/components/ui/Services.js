@@ -19,7 +19,7 @@ export default function Services() {
     {
       title: "Road Transport",
       description: "Flexible road freight solutions covering both local and international routes.",
-      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",
+      image: "https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=800&q=80",
     },
   ];
 

@@ -1,5 +1,6 @@
 import { Barlow } from "next/font/google";
 import "./globals.css";
+import TawkTo from "@/components/ui/TawkTo";
 
 const barlow = Barlow({
   subsets: ["latin"],
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={barlow.variable} style={{ fontFamily: "var(--font-barlow), sans-serif" }}>
         {children}
+        <TawkTo />
       </body>
     </html>
   );
